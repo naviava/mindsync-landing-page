@@ -14,7 +14,7 @@ function App() {
   const features = [
     {
       icon: <Zap className="w-12 h-12 text-cyan-400" />,
-      title: 'Powerful Server Functions',
+      title: 'Powerful Server Functionss',
       description:
         'Write server-side code that seamlessly integrates with your client components. Type-safe, secure, and simple.',
     },
