@@ -1,3 +1,4 @@
+import { AboutUs } from '@/components/about-us'
 import { MainBanner } from '@/components/main-banner'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -22,7 +23,7 @@ function LandingPage() {
     <main>
       <header className="h-[121px] bg-[#001633]">Top header</header>
       <MainBanner />
-      <section>About us</section>
+      <AboutUs />
       <section>Our Core Values</section>
       <section>Technologies and Expertise</section>
       <section>Industries We Empower</section>
