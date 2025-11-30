@@ -1,12 +1,12 @@
 export function AboutUs() {
   return (
-    <section id="about-us" className="">
-      <div className="max-w-[1700px] px-4 py-10 mx-auto flex flex-col lg:flex-row items-center lg:gap-x-16 gap-y-4">
-        <h2 className="text-center font-poppins font-bold text-cta text-[40px] md:text-[70px] lg:text-[120px] lg:text-left! w-full whitespace-nowrap max-w-fit">
+    <section id="about-us" className="px-4 py-10 lg:px-14">
+      <div className="max-w-[1600px] mx-auto flex flex-col xl:flex-row items-center lg:gap-x-16 gap-y-4">
+        <h2 className="text-center font-poppins font-bold text-cta text-[40px] md:text-[70px] xl:text-[90px] xl:text-left! w-full whitespace-nowrap max-w-fit">
           About Us
         </h2>
-        <div className="text-[25px] text-center lg:text-justify!">
-          <p>
+        <div className="text-[25px] text-center xl:text-justify!">
+          <p className="text-balance">
             <span className="text-cta font-bold">MindSync</span> partners with
             businesses to co-create{' '}
             <span className="font-bold">
