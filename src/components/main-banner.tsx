@@ -6,7 +6,7 @@ export function MainBanner() {
     >
       <div className="text-white h-full font-bold font-poppins text-[60px] px-10 flex items-center justify-center md:justify-start max-w-[2350px] mx-auto">
         <div>
-          <div className="flex flex-col lg:flex-row lg:gap-x-2 items-center md:items-start lg:items-center">
+          <div className="flex flex-col lg:flex-row lg:gap-x-2 items-center md:items-start lg:items-center lg:justify-between">
             <p>Think</p>
             <img
               src="/assets/banner-dot.png"
