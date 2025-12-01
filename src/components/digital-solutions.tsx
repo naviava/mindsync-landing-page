@@ -3,16 +3,17 @@ import { useScreenSize } from "@/hooks/use-screen-size";
 import { cn } from "@/lib/utils";
 
 export function DigitalSolutions() {
-  const { isMobile, isTablet } = useScreenSize();
+  const { isMobile } = useScreenSize();
 
   return (
-    <div className="flex flex-col gap-y-6 mt-12 md:gap-y-8 lg:gap-y-10 xl:gap-y-14">
+    <div className="flex flex-col gap-y-6 mt-12 lg:mt-16 md:gap-y-8 lg:gap-y-10 xl:gap-y-14">
       <h3 className="text-cta text-[40px] font-poppins font-bold text-center">
         Digital Solutions
       </h3>
       <div className="grid grid-cols-2 md:grid-cols-3">
         {digitalSolutions.map((item, idx) => (
           <div
+            key={item.id}
             className={cn(
               "relative border-cta",
               isMobile && idx < 4 && "border-b-2",
@@ -63,9 +64,10 @@ export function DigitalSolutions() {
               <div className="absolute w-2 h-2 bg-cta rounded -left-[5px] bottom-0" />
             )}
 
+            {/* Content */}
             <div
               key={item.id}
-              className="flex flex-col mx-auto p-6 md:p-8 xl:p-12"
+              className="flex flex-col mx-auto p-4 md:p-8 xl:p-12"
             >
               <img
                 src={item.imageUrl}

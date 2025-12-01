@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -113,8 +113,8 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --font-roboto: 'Roboto', sans-serif;
-  --font-poppins: 'Poppins', sans-serif;
+  --font-roboto: "Roboto", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
   --color-cta: #0076ea;
 }
 
@@ -130,4 +130,25 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* 3D flip container */
+.flip-card-inner {
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+/* Rotate the inner card when group is hovered */
+.group:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Both faces: hide back side when turned away */
+.flip-card-face {
+  backface-visibility: hidden;
+}
+
+/* Back face: rotated so it shows when the inner flips */
+.flip-card-back {
+  transform: rotateY(180deg);
 }

@@ -13,7 +13,7 @@ export function OurCoreValues() {
         <h2 className="text-center font-bold text-cta text-[40px] md:text-[70px] xl:text-[90px] font-poppins">
           Our Core Values
         </h2>
-        <div className="flex flex-col xl:flex-row items-center mt-4 md:mt-6 lg:mt-12 lg:px-10 gap-10">
+        <div className="flex flex-col xl:flex-row items-center mt-4 md:mt-6 lg:px-10 gap-10">
           {/* Image */}
           <img
             src="/assets/core-values.png"
