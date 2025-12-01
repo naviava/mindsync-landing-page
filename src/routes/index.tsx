@@ -1,24 +1,25 @@
-import { AboutUs } from '@/components/about-us'
-import { MainBanner } from '@/components/main-banner'
-import { OurCoreValues } from '@/components/our-core-values'
-import { TechExpertise } from '@/components/tech-expertise'
-import { createFileRoute } from '@tanstack/react-router'
+import { AboutUs } from "@/components/about-us";
+import { IndustriesWeEmpower } from "@/components/industries-we-empower";
+import { MainBanner } from "@/components/main-banner";
+import { OurCoreValues } from "@/components/our-core-values";
+import { TechExpertise } from "@/components/tech-expertise";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       {
-        name: 'description',
+        name: "description",
         content:
-          'Mindsync provides strategic, purpose-driven partnership to scale businesses globally through digital innovation and structured market expansion.',
+          "Mindsync provides strategic, purpose-driven partnership to scale businesses globally through digital innovation and structured market expansion.",
       },
       {
-        title: 'Mindsync - Connecting Intelligence with Innovation',
+        title: "Mindsync - Connecting Intelligence with Innovation",
       },
     ],
   }),
   component: LandingPage,
-})
+});
 
 function LandingPage() {
   return (
@@ -28,8 +29,8 @@ function LandingPage() {
       <AboutUs />
       <OurCoreValues />
       <TechExpertise />
-      <section>Industries We Empower</section>
+      <IndustriesWeEmpower />
       <section>Contact us</section>
     </main>
-  )
+  );
 }
