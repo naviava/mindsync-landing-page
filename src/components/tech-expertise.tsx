@@ -1,3 +1,5 @@
+import { DigitalSolutions } from "./digital-solutions";
+
 export function TechExpertise() {
   return (
     <section
@@ -17,7 +19,7 @@ export function TechExpertise() {
         </p>
       </div>
       <div>Cards</div>
-      <div>Grid</div>
+      <DigitalSolutions />
     </section>
-  )
+  );
 }

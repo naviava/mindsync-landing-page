@@ -1,6 +1,6 @@
-import { coreValues } from '@/data/core-values'
-import { missionVision } from '@/data/mission-vision'
-import { cn } from '@/lib/utils'
+import { coreValues } from "@/data/core-values";
+import { missionVision } from "@/data/mission-vision";
+import { cn } from "@/lib/utils";
 
 export function OurCoreValues() {
   return (
@@ -28,7 +28,7 @@ export function OurCoreValues() {
                 key={value.label}
                 className={cn(
                   idx === coreValues.length - 1 &&
-                    'md:col-span-2 xl:col-span-1 md:max-w-md md:mx-auto xl:max-w-none',
+                    "md:col-span-2 xl:col-span-1 md:max-w-md md:mx-auto xl:max-w-none",
                 )}
               >
                 <h3 className="text-center xl:text-left! italic text-[30px] font-bold">
@@ -50,14 +50,14 @@ export function OurCoreValues() {
         ))}
       </div>
     </section>
-  )
+  );
 }
 
 function MVCard(props: {
-  label: string
-  description: string
-  imageUrl: string
-  idx: number
+  label: string;
+  description: string;
+  imageUrl: string;
+  idx: number;
 }) {
   return (
     <div className="relative bg-[#00327D] px-8 py-6 rounded-2xl text-white">
@@ -65,5 +65,5 @@ function MVCard(props: {
       <h3 className="mt-4 font-extrabold text-[28px]">{props.label}</h3>
       <p className="mt-2 text-[24px]">{props.description}</p>
     </div>
-  )
+  );
 }
