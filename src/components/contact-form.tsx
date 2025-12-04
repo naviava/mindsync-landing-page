@@ -1,12 +1,36 @@
 import { useState } from "react";
-
 import { useForm } from "@tanstack/react-form";
 import { cn } from "@/lib/utils";
+
+// Sanitize input to prevent XSS attacks
+const sanitizeInput = (value: string): string => {
+  return value
+    .replace(/[<>]/g, "") // Remove angle brackets
+    .trim();
+};
+
+// Validate phone: 10+ digits only
+const validatePhone = (value: string): boolean => {
+  const digits = value.replace(/\D/g, "");
+  return digits.length >= 7;
+};
+
+// Validate email format
+const validateEmail = (value: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(value);
+};
 
 export function ContactForm() {
   const [focusedField, setFocusedField] = useState<
     "NAME" | "PHONE" | "EMAIL" | "MESSAGE" | null
   >(null);
+
+  const [fieldErrors, setFieldErrors] = useState({
+    name: "",
+    phone: "",
+    email: "",
+  });
 
   const form = useForm({
     defaultValues: {
@@ -15,14 +39,47 @@ export function ContactForm() {
       email: "",
       message: "",
     },
-    onSubmit: async ({ value }) => {
-      console.log(value);
+    onSubmit: ({ value }) => {
+      const errors = { name: "", phone: "", email: "" };
+      let isValid = true;
+
+      // Validate name
+      if (!value.name || value.name.length < 2) {
+        errors.name = "Name must be at least 2 characters";
+        isValid = false;
+      }
+
+      // Validate phone
+      if (!validatePhone(value.phone)) {
+        errors.phone = "Phone must be at least 7 digits";
+        isValid = false;
+      }
+
+      // Validate email
+      if (!validateEmail(value.email)) {
+        errors.email = "Please enter a valid email";
+        isValid = false;
+      }
+
+      setFieldErrors(errors);
+
+      if (isValid) {
+        // Sanitize all inputs before sending
+        const sanitizedData = {
+          name: sanitizeInput(value.name),
+          phone: value.phone.replace(/\D/g, ""),
+          email: sanitizeInput(value.email),
+          message: sanitizeInput(value.message),
+        };
+        console.log("Submitting:", sanitizedData);
+        // Send to backend here
+      }
     },
   });
 
   return (
     <form
-      className="space-y-6 mt-6"
+      className="gap-y-6 mt-6 flex flex-col"
       onSubmit={(e) => {
         e.preventDefault();
         form.handleSubmit();
@@ -32,17 +89,6 @@ export function ContactForm() {
       <div>
         <form.Field
           name="name"
-          validators={{
-            onChange: ({ value }) =>
-              value.length < 3
-                ? "Name must be at least 3 characters"
-                : undefined,
-            onChangeAsyncDebounceMs: 500,
-            onChangeAsync: async ({ value }) => {
-              await new Promise((resolve) => setTimeout(resolve, 1000));
-              return value.includes("error") && 'No "error" allowed in name';
-            },
-          }}
           children={(field) => {
             return (
               <div className="relative">
@@ -61,20 +107,25 @@ export function ContactForm() {
                   id={field.name}
                   name={field.name}
                   value={field.state.value}
+                  maxLength={50}
                   onFocus={() => setFocusedField("NAME")}
                   onBlur={() => {
                     setFocusedField((prev) => (prev === "NAME" ? null : prev));
-                    return field.handleBlur;
+                    field.handleBlur();
                   }}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  className="bg-white focus:outline-none rounded-full w-full text-[20px] xl:text-[22px] px-6 py-4"
-                />
-                <div
+                  onChange={(e) =>
+                    field.handleChange(sanitizeInput(e.target.value))
+                  }
                   className={cn(
-                    "ml-4 text-red-700 text-sm mt-1",
-                    field.state.meta.isValidating && "text-white",
+                    "bg-white focus:outline-none rounded-full w-full text-[20px] xl:text-[22px] px-6 py-4",
+                    fieldErrors.name && "outline-3 outline-red-500",
                   )}
-                ></div>
+                />
+                {fieldErrors.name && (
+                  <div className="ml-4 text-red-800 text-sm mt-1">
+                    {fieldErrors.name}
+                  </div>
+                )}
               </div>
             );
           }}
@@ -87,18 +138,6 @@ export function ContactForm() {
         <div className="w-full">
           <form.Field
             name="phone"
-            validators={{
-              onChange: ({ value }) =>
-                value.length < 7 ? "Enter a valid phone number" : undefined,
-              onChangeAsyncDebounceMs: 500,
-              onChangeAsync: async ({ value }) => {
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-                return (
-                  value.includes("error") &&
-                  'No "error" allowed in contact number'
-                );
-              },
-            }}
             children={(field) => {
               return (
                 <div className="relative">
@@ -116,23 +155,27 @@ export function ContactForm() {
                   <input
                     id={field.name}
                     name={field.name}
+                    type="tel"
                     value={field.state.value}
+                    maxLength={20}
                     onFocus={() => setFocusedField("PHONE")}
                     onBlur={() => {
                       setFocusedField((prev) =>
                         prev === "PHONE" ? null : prev,
                       );
-                      return field.handleBlur;
+                      field.handleBlur();
                     }}
                     onChange={(e) => field.handleChange(e.target.value)}
-                    className="bg-white focus:outline-none rounded-full w-full text-[20px] px-6 py-4 xl:text-[22px]"
-                  />
-                  <div
                     className={cn(
-                      "ml-4 text-red-700 text-sm mt-1",
-                      field.state.meta.isValidating && "text-white",
+                      "bg-white focus:outline-none rounded-full w-full text-[20px] px-6 py-4 xl:text-[22px]",
+                      fieldErrors.phone && "outline-3 outline-red-500",
                     )}
-                  ></div>
+                  />
+                  {fieldErrors.phone && (
+                    <div className="ml-4 text-red-800 text-sm mt-1">
+                      {fieldErrors.phone}
+                    </div>
+                  )}
                 </div>
               );
             }}
@@ -143,17 +186,6 @@ export function ContactForm() {
         <div className="w-full">
           <form.Field
             name="email"
-            validators={{
-              onChange: ({ value }) =>
-                value.length < 3
-                  ? "Name must be at least 3 characters"
-                  : undefined,
-              onChangeAsyncDebounceMs: 500,
-              onChangeAsync: async ({ value }) => {
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-                return value.includes("error") && 'No "error" allowed in email';
-              },
-            }}
             children={(field) => {
               return (
                 <div className="relative">
@@ -173,22 +205,27 @@ export function ContactForm() {
                     type="email"
                     name={field.name}
                     value={field.state.value}
+                    maxLength={100}
                     onFocus={() => setFocusedField("EMAIL")}
                     onBlur={() => {
                       setFocusedField((prev) =>
                         prev === "EMAIL" ? null : prev,
                       );
-                      return field.handleBlur;
+                      field.handleBlur();
                     }}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    className="bg-white focus:outline-none rounded-full w-full text-[20px] xl:text-[22px] px-6 py-4"
-                  />
-                  <div
+                    onChange={(e) =>
+                      field.handleChange(sanitizeInput(e.target.value))
+                    }
                     className={cn(
-                      "ml-4 text-red-700 text-sm mt-1",
-                      field.state.meta.isValidating && "text-white",
+                      "bg-white focus:outline-none rounded-full w-full text-[20px] xl:text-[22px] px-6 py-4",
+                      fieldErrors.email && "outline-3 outline-red-500",
                     )}
-                  ></div>
+                  />
+                  {fieldErrors.email && (
+                    <div className="ml-4 text-red-800 text-sm mt-1">
+                      {fieldErrors.email}
+                    </div>
+                  )}
                 </div>
               );
             }}
@@ -200,13 +237,6 @@ export function ContactForm() {
       <div className="w-full">
         <form.Field
           name="message"
-          validators={{
-            onChangeAsyncDebounceMs: 500,
-            onChangeAsync: async ({ value }) => {
-              await new Promise((resolve) => setTimeout(resolve, 1000));
-              return value.includes("error") && 'No "error" allowed in name';
-            },
-          }}
           children={(field) => {
             return (
               <div className="relative">
@@ -225,28 +255,32 @@ export function ContactForm() {
                   id={field.name}
                   name={field.name}
                   value={field.state.value}
+                  maxLength={500}
                   rows={10}
                   onFocus={() => setFocusedField("MESSAGE")}
                   onBlur={() => {
                     setFocusedField((prev) =>
                       prev === "MESSAGE" ? null : prev,
                     );
-                    return field.handleBlur;
+                    field.handleBlur();
                   }}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                  onChange={(e) =>
+                    field.handleChange(sanitizeInput(e.target.value))
+                  }
                   className="bg-white focus:outline-none rounded-3xl w-full text-[20px] px-6 py-4 xl:text-[22px]"
                 />
-                <div
-                  className={cn(
-                    "ml-4 text-red-700 text-sm mt-1",
-                    field.state.meta.isValidating && "text-white",
-                  )}
-                ></div>
               </div>
             );
           }}
         />
       </div>
+
+      <button
+        type="submit"
+        className="mx-auto bg-cta shadow-[0_0_4px_5px_rgba(0,173,255,0.25)] w-40 text-lg font-poppins text-white font-semibold rounded-full px-6 py-3 hover:bg-cta/60 transition-all cursor-pointer tracking-wider"
+      >
+        SUBMIT
+      </button>
     </form>
   );
 }
