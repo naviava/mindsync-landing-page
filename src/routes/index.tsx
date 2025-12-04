@@ -1,9 +1,10 @@
-import { AboutUs } from "@/components/about-us";
 import { IndustriesWeEmpower } from "@/components/industries-we-empower";
-import { MainBanner } from "@/components/main-banner";
 import { OurCoreValues } from "@/components/our-core-values";
 import { TechExpertise } from "@/components/tech-expertise";
 import { createFileRoute } from "@tanstack/react-router";
+import { MainBanner } from "@/components/main-banner";
+import { ContactUs } from "@/components/contact-us";
+import { AboutUs } from "@/components/about-us";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -30,7 +31,7 @@ function LandingPage() {
       <OurCoreValues />
       <TechExpertise />
       <IndustriesWeEmpower />
-      <section>Contact us</section>
+      <ContactUs />
     </main>
   );
 }
