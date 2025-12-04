@@ -23,7 +23,7 @@ export const Route = createFileRoute("/")({
 
 function LandingPage() {
   return (
-    <main>
+    <main className="pb-24">
       <header className="h-[121px] bg-[#001633]">Top header</header>
       <MainBanner />
       <AboutUs />

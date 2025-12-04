@@ -10,9 +10,9 @@ export function DigitalSolutions() {
       <h3 className="text-cta text-[40px] font-poppins font-bold text-center">
         Digital Solutions
       </h3>
-      <div className="grid grid-cols-2 md:grid-cols-3">
+      <ul className="grid grid-cols-2 md:grid-cols-3">
         {digitalSolutions.map((item, idx) => (
-          <div
+          <li
             key={item.id}
             className={cn(
               "relative border-cta",
@@ -78,9 +78,9 @@ export function DigitalSolutions() {
                 {item.label}
               </h4>
             </div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }

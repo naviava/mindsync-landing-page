@@ -3,9 +3,9 @@ import { cn } from "@/lib/utils";
 
 export function TechCards() {
   return (
-    <div className="mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mx-auto w-fit gap-y-8 md:gap-x-12">
+    <ul className="mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mx-auto w-fit gap-y-8 md:gap-x-12">
       {techCards.map((item, idx) => (
-        <div
+        <li
           key={item.id}
           className={cn(
             "relative group w-[270px] h-60 rounded-lg perspective-[1000px] mx-auto",
@@ -29,8 +29,8 @@ export function TechCards() {
               </p>
             </div>
           </div>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
