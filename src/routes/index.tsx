@@ -24,8 +24,7 @@ export const Route = createFileRoute("/")({
 
 function LandingPage() {
   return (
-    <main className="pb-24">
-      <header className="h-[121px] bg-[#001633]">Top header</header>
+    <main>
       <MainBanner />
       <AboutUs />
       <OurCoreValues />
