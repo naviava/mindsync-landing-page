@@ -14,6 +14,7 @@ const INDUSTRIES: {
 export function IndustriesWeEmpower() {
   return (
     <section
+      id="industries"
       className="bg-cover bg-center pt-12 md:pt-16 lg:pt-18 pb-16 mt-12 px-4 md:pb-24 lg:pb-32 xl:pb-24"
       style={{ backgroundImage: "url('/assets/industries-bg.png')" }}
     >

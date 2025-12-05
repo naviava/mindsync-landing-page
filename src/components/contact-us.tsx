@@ -3,6 +3,7 @@ import { ContactForm } from "./contact-form";
 export function ContactUs() {
   return (
     <section
+      id="contact-us"
       className="bg-cover bg-center flex justify-center items-center px-4 py-20"
       style={{ backgroundImage: "url('/assets/contact-bg.png')" }}
     >

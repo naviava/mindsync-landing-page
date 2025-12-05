@@ -277,7 +277,7 @@ export function ContactForm() {
 
       <button
         type="submit"
-        className="mx-auto bg-cta shadow-[0_0_4px_5px_rgba(0,173,255,0.25)] w-40 text-lg font-poppins text-white font-semibold rounded-full px-6 py-3 hover:bg-cta/60 transition-all cursor-pointer tracking-wider"
+        className="text-[22px] inline-flex items-center justify-center cursor-pointer text-white font-semibold px-10 py-4 text-lg rounded-full border border-cta backdrop-blur-md bg-cta hover:bg-cta/80 hover:shadow-[0_10px_25px_rgba(0,118,234,0.45)] transition-all duration-300"
       >
         SUBMIT
       </button>

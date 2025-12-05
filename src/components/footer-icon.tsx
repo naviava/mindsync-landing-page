@@ -7,7 +7,7 @@ interface IProps {
   className?: string;
 }
 
-export function CTAIcon({ Icon, size, className }: IProps) {
+export function FooterIcon({ Icon, size, className }: IProps) {
   return (
     <div
       className={cn(

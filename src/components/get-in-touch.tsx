@@ -1,14 +1,7 @@
-import {
-  Facebook,
-  Instagram,
-  Linkedin,
-  LocateIcon,
-  Mail,
-  PhoneCall,
-  Twitter,
-  type LucideIcon,
-} from "lucide-react";
-import { CTAIcon } from "./cta-icon";
+import { LocateIcon, Mail, PhoneCall, type LucideIcon } from "lucide-react";
+import { SocialIcon } from "./social-icon";
+import { FooterIcon } from "./footer-icon";
+import { SOCIAL } from "@/data/social";
 
 const DETAILS: {
   id: string;
@@ -32,33 +25,6 @@ const DETAILS: {
   },
 ];
 
-const SOCIAL: {
-  id: string;
-  Icon: LucideIcon;
-  href: string;
-}[] = [
-  {
-    id: "insta-footer",
-    Icon: Instagram,
-    href: "#",
-  },
-  {
-    id: "facebook-footer",
-    Icon: Facebook,
-    href: "#",
-  },
-  {
-    id: "linkedin-footer",
-    Icon: Linkedin,
-    href: "#",
-  },
-  {
-    id: "twitter-footer",
-    Icon: Twitter,
-    href: "#",
-  },
-];
-
 export function GetInTouch() {
   return (
     <div className="flex flex-col">
@@ -70,16 +36,14 @@ export function GetInTouch() {
               key={item.id}
               className="text-[18px] flex flex-row items-center"
             >
-              <CTAIcon Icon={item.Icon} />
+              <FooterIcon Icon={item.Icon} />
               <span className="ml-2">{item.data}</span>
             </li>
           ))}
-          <ul className="flex items-center gap-x-3">
+          <ul className="flex items-center gap-x-6 pt-4 justify-end">
             {SOCIAL.map((item) => (
               <li key={item.id}>
-                <a href={item.href}>
-                  <CTAIcon Icon={item.Icon} />
-                </a>
+                <SocialIcon icon={item.icon} href={item.href} />
               </li>
             ))}
           </ul>

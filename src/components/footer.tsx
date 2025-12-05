@@ -3,17 +3,16 @@ import { QuickLinks } from "./quick-links";
 
 export function Footer() {
   return (
-    <footer
-      className="pt-10 px-6 pb-24 bg-[#00132b]"
-      // style={{ backgroundImage: "url('/assets/footer-bg.png')" }}
-    >
+    <footer className="pt-10 px-6 pb-24 bg-[#00132b]">
       <div className="text-white flex flex-col lg:flex-row max-w-[1200px] gap-y-12 md:gap-y-16 mx-auto">
         <div className="flex flex-col md:items-center lg:items-start">
-          <img
-            src="/assets/logo-dark.png"
-            alt="Mindsync logo"
-            className="w-[142px]"
-          />
+          <a href="#">
+            <img
+              src="/assets/logo-dark.png"
+              alt="Mindsync logo"
+              className="w-[142px]"
+            />
+          </a>
           <p className="text-[18px] text-balance w-fit md:text-center max-w-120 lg:text-left">
             Mindsync specialises in building customised software designed to
             evolve with your business.

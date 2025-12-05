@@ -4,7 +4,7 @@ import { TechCards } from "./tech-cards";
 export function TechExpertise() {
   return (
     <section
-      id="tech_expertise"
+      id="tech-expertise"
       className="px-4 mt-10 md:mt-16 lg:mt-20 max-w-[1600px] mx-auto md:px-10!"
     >
       <div className="flex flex-col xl:flex-row lg:gap-x-6 lg:items-center">
