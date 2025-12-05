@@ -40,7 +40,7 @@ export function GetInTouch() {
               <span className="ml-2">{item.data}</span>
             </li>
           ))}
-          <ul className="flex items-center gap-x-6 pt-4 justify-end">
+          <ul className="flex items-center gap-x-6 pt-4">
             {SOCIAL.map((item) => (
               <li key={item.id}>
                 <SocialIcon icon={item.icon} href={item.href} />

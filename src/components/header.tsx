@@ -46,14 +46,10 @@ export function Header() {
             </li>
           ))}
         </ul>
-        <ul className="flex items-center gap-x-3">
+        <ul className="flex items-center gap-x-3 lg:gap-x-6 xl:gap-x-10">
           {SOCIAL.map((item) => (
             <li key={item.id}>
-              <SocialIcon
-                icon={item.icon}
-                href={item.href}
-                className="size-[30px]"
-              />
+              <SocialIcon icon={item.icon} href={item.href} />
             </li>
           ))}
         </ul>

@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "@tanstack/react-form";
+
 import { cn } from "@/lib/utils";
+import { sendEmail } from "@/actions";
 
 // Sanitize input to prevent XSS attacks
 const sanitizeInput = (value: string): string => {
@@ -30,6 +34,10 @@ export function ContactForm() {
     name: "",
     phone: "",
     email: "",
+  });
+
+  const mutation = useMutation({
+    mutationFn: sendEmail,
   });
 
   const form = useForm({
@@ -71,216 +79,231 @@ export function ContactForm() {
           email: sanitizeInput(value.email),
           message: sanitizeInput(value.message),
         };
-        console.log("Submitting:", sanitizedData);
-        // Send to backend here
+        mutation.mutate({ data: sanitizedData });
       }
     },
   });
 
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      form.reset();
+    }
+  }, [mutation.isSuccess, form]);
+
   return (
-    <form
-      className="gap-y-6 mt-6 flex flex-col"
-      onSubmit={(e) => {
-        e.preventDefault();
-        form.handleSubmit();
-      }}
-    >
-      {/* Name */}
-      <div>
-        <form.Field
-          name="name"
-          children={(field) => {
-            return (
-              <div className="relative">
-                <label
-                  htmlFor={field.name}
-                  className={cn(
-                    "text-[22px] xl:text-[24px] absolute left-6 top-2.5 text-[#545454] transition-all",
-                    focusedField === "NAME" || field.state.value
-                      ? "-translate-y-2 text-xs italic xl:text-sm"
-                      : "translate-y-0",
-                  )}
-                >
-                  Name
-                </label>
-                <input
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  maxLength={50}
-                  onFocus={() => setFocusedField("NAME")}
-                  onBlur={() => {
-                    setFocusedField((prev) => (prev === "NAME" ? null : prev));
-                    field.handleBlur();
-                  }}
-                  onChange={(e) =>
-                    field.handleChange(sanitizeInput(e.target.value))
-                  }
-                  className={cn(
-                    "bg-white focus:outline-none rounded-full w-full text-[20px] xl:text-[22px] px-6 py-4",
-                    fieldErrors.name && "outline-3 outline-red-500",
-                  )}
-                />
-                {fieldErrors.name && (
-                  <div className="ml-4 text-red-800 text-sm mt-1">
-                    {fieldErrors.name}
+    <>
+      {mutation.isSuccess ? (
+        <p className="text-white text-center text-[40px] mt-16 font-semibold">
+          Thank you for reaching out.
+          <br />
+          We&apos;ll get back to you shortly.
+        </p>
+      ) : (
+        <form
+          className="gap-y-6 mt-6 flex flex-col"
+          onSubmit={(e) => {
+            e.preventDefault();
+            form.handleSubmit();
+          }}
+        >
+          {/* Name */}
+          <div>
+            <form.Field
+              name="name"
+              children={(field) => {
+                return (
+                  <div className="relative">
+                    <label
+                      htmlFor={field.name}
+                      className={cn(
+                        "text-[22px] xl:text-[24px] absolute left-6 top-2.5 text-[#545454] transition-all",
+                        focusedField === "NAME" || field.state.value
+                          ? "-translate-y-2 text-xs italic xl:text-sm"
+                          : "translate-y-0",
+                      )}
+                    >
+                      Name
+                    </label>
+                    <input
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      maxLength={50}
+                      onFocus={() => setFocusedField("NAME")}
+                      onBlur={() => {
+                        setFocusedField((prev) =>
+                          prev === "NAME" ? null : prev,
+                        );
+                        field.handleBlur();
+                      }}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      disabled={mutation.isPending}
+                      className={cn(
+                        "bg-white focus:outline-none rounded-full w-full text-[20px] xl:text-[22px] px-6 py-4",
+                        fieldErrors.name && "outline-3 outline-red-500",
+                      )}
+                    />
+                    {fieldErrors.name && (
+                      <div className="ml-4 text-red-800 text-sm mt-1">
+                        {fieldErrors.name}
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            );
-          }}
-        />
-      </div>
+                );
+              }}
+            />
+          </div>
 
-      {/* Contact no. and Email */}
-      <div className="flex flex-col md:flex-row md:items-center gap-x-0 gap-y-6 md:gap-x-4 md:gap-y-0 w-full">
-        {/* Phone */}
-        <div className="w-full">
-          <form.Field
-            name="phone"
-            children={(field) => {
-              return (
-                <div className="relative">
-                  <label
-                    htmlFor={field.name}
-                    className={cn(
-                      "text-[22px] xl:text-[24px] absolute left-6 top-2.5 text-[#545454] transition-all",
-                      focusedField === "PHONE" || field.state.value
-                        ? "-translate-y-2 text-xs italic xl:text-sm"
-                        : "translate-y-0",
-                    )}
-                  >
-                    Contact No.
-                  </label>
-                  <input
-                    id={field.name}
-                    name={field.name}
-                    type="tel"
-                    value={field.state.value}
-                    maxLength={20}
-                    onFocus={() => setFocusedField("PHONE")}
-                    onBlur={() => {
-                      setFocusedField((prev) =>
-                        prev === "PHONE" ? null : prev,
-                      );
-                      field.handleBlur();
-                    }}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    className={cn(
-                      "bg-white focus:outline-none rounded-full w-full text-[20px] px-6 py-4 xl:text-[22px]",
-                      fieldErrors.phone && "outline-3 outline-red-500",
-                    )}
-                  />
-                  {fieldErrors.phone && (
-                    <div className="ml-4 text-red-800 text-sm mt-1">
-                      {fieldErrors.phone}
+          {/* Contact no. and Email */}
+          <div className="flex flex-col md:flex-row md:items-center gap-x-0 gap-y-6 md:gap-x-4 md:gap-y-0 w-full">
+            {/* Phone */}
+            <div className="w-full">
+              <form.Field
+                name="phone"
+                children={(field) => {
+                  return (
+                    <div className="relative">
+                      <label
+                        htmlFor={field.name}
+                        className={cn(
+                          "text-[22px] xl:text-[24px] absolute left-6 top-2.5 text-[#545454] transition-all",
+                          focusedField === "PHONE" || field.state.value
+                            ? "-translate-y-2 text-xs italic xl:text-sm"
+                            : "translate-y-0",
+                        )}
+                      >
+                        Contact No.
+                      </label>
+                      <input
+                        id={field.name}
+                        name={field.name}
+                        type="tel"
+                        value={field.state.value}
+                        maxLength={20}
+                        onFocus={() => setFocusedField("PHONE")}
+                        onBlur={() => {
+                          setFocusedField((prev) =>
+                            prev === "PHONE" ? null : prev,
+                          );
+                          field.handleBlur();
+                        }}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        disabled={mutation.isPending}
+                        className={cn(
+                          "bg-white focus:outline-none rounded-full w-full text-[20px] px-6 py-4 xl:text-[22px]",
+                          fieldErrors.phone && "outline-3 outline-red-500",
+                        )}
+                      />
+                      {fieldErrors.phone && (
+                        <div className="ml-4 text-red-800 text-sm mt-1">
+                          {fieldErrors.phone}
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              );
-            }}
-          />
-        </div>
+                  );
+                }}
+              />
+            </div>
 
-        {/* Email */}
-        <div className="w-full">
-          <form.Field
-            name="email"
-            children={(field) => {
-              return (
-                <div className="relative">
-                  <label
-                    htmlFor={field.name}
-                    className={cn(
-                      "text-[22px] xl:text-[24px] absolute left-6 top-2.5 text-[#545454] transition-all",
-                      focusedField === "EMAIL" || field.state.value
-                        ? "-translate-y-2 text-xs italic xl:text-sm"
-                        : "translate-y-0",
-                    )}
-                  >
-                    E-mail
-                  </label>
-                  <input
-                    id={field.name}
-                    type="email"
-                    name={field.name}
-                    value={field.state.value}
-                    maxLength={100}
-                    onFocus={() => setFocusedField("EMAIL")}
-                    onBlur={() => {
-                      setFocusedField((prev) =>
-                        prev === "EMAIL" ? null : prev,
-                      );
-                      field.handleBlur();
-                    }}
-                    onChange={(e) =>
-                      field.handleChange(sanitizeInput(e.target.value))
-                    }
-                    className={cn(
-                      "bg-white focus:outline-none rounded-full w-full text-[20px] xl:text-[22px] px-6 py-4",
-                      fieldErrors.email && "outline-3 outline-red-500",
-                    )}
-                  />
-                  {fieldErrors.email && (
-                    <div className="ml-4 text-red-800 text-sm mt-1">
-                      {fieldErrors.email}
+            {/* Email */}
+            <div className="w-full">
+              <form.Field
+                name="email"
+                children={(field) => {
+                  return (
+                    <div className="relative">
+                      <label
+                        htmlFor={field.name}
+                        className={cn(
+                          "text-[22px] xl:text-[24px] absolute left-6 top-2.5 text-[#545454] transition-all",
+                          focusedField === "EMAIL" || field.state.value
+                            ? "-translate-y-2 text-xs italic xl:text-sm"
+                            : "translate-y-0",
+                        )}
+                      >
+                        E-mail
+                      </label>
+                      <input
+                        id={field.name}
+                        type="email"
+                        name={field.name}
+                        value={field.state.value}
+                        maxLength={100}
+                        onFocus={() => setFocusedField("EMAIL")}
+                        onBlur={() => {
+                          setFocusedField((prev) =>
+                            prev === "EMAIL" ? null : prev,
+                          );
+                          field.handleBlur();
+                        }}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        disabled={mutation.isPending}
+                        className={cn(
+                          "bg-white focus:outline-none rounded-full w-full text-[20px] xl:text-[22px] px-6 py-4",
+                          fieldErrors.email && "outline-3 outline-red-500",
+                        )}
+                      />
+                      {fieldErrors.email && (
+                        <div className="ml-4 text-red-800 text-sm mt-1">
+                          {fieldErrors.email}
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              );
-            }}
-          />
-        </div>
-      </div>
+                  );
+                }}
+              />
+            </div>
+          </div>
 
-      {/* Message */}
-      <div className="w-full">
-        <form.Field
-          name="message"
-          children={(field) => {
-            return (
-              <div className="relative">
-                <label
-                  htmlFor={field.name}
-                  className={cn(
-                    "text-[22px] xl:text-[24px] absolute left-6 top-2.5 text-[#545454] transition-all",
-                    focusedField === "MESSAGE" || field.state.value
-                      ? "-translate-y-2 text-xs italic xl:text-sm"
-                      : "translate-y-0",
-                  )}
-                >
-                  {!field.state.value ? "Enter your message" : "Message"}
-                </label>
-                <textarea
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  maxLength={500}
-                  rows={10}
-                  onFocus={() => setFocusedField("MESSAGE")}
-                  onBlur={() => {
-                    setFocusedField((prev) =>
-                      prev === "MESSAGE" ? null : prev,
-                    );
-                    field.handleBlur();
-                  }}
-                  onChange={(e) =>
-                    field.handleChange(sanitizeInput(e.target.value))
-                  }
-                  className="bg-white focus:outline-none rounded-3xl w-full text-[20px] px-6 py-4 xl:text-[22px]"
-                />
-              </div>
-            );
-          }}
-        />
-      </div>
+          {/* Message */}
+          <div className="w-full">
+            <form.Field
+              name="message"
+              children={(field) => {
+                return (
+                  <div className="relative">
+                    <label
+                      htmlFor={field.name}
+                      className={cn(
+                        "text-[22px] xl:text-[24px] absolute left-6 top-2.5 text-[#545454] transition-all",
+                        focusedField === "MESSAGE" || field.state.value
+                          ? "-translate-y-2 text-xs italic xl:text-sm"
+                          : "translate-y-0",
+                      )}
+                    >
+                      {!field.state.value ? "Enter your message" : "Message"}
+                    </label>
+                    <textarea
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      maxLength={500}
+                      rows={10}
+                      onFocus={() => setFocusedField("MESSAGE")}
+                      onBlur={() => {
+                        setFocusedField((prev) =>
+                          prev === "MESSAGE" ? null : prev,
+                        );
+                        field.handleBlur();
+                      }}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      disabled={mutation.isPending}
+                      className="bg-white focus:outline-none rounded-3xl w-full text-[20px] px-6 py-4 xl:text-[22px]"
+                    />
+                  </div>
+                );
+              }}
+            />
+          </div>
 
-      <button
-        type="submit"
-        className="text-[22px] inline-flex items-center justify-center cursor-pointer text-white font-semibold px-10 py-4 text-lg rounded-full border border-cta backdrop-blur-md bg-cta hover:bg-cta/80 hover:shadow-[0_10px_25px_rgba(0,118,234,0.45)] transition-all duration-300"
-      >
-        SUBMIT
-      </button>
-    </form>
+          <button
+            type="submit"
+            className="text-[22px] inline-flex items-center justify-center cursor-pointer text-white font-semibold px-10 py-4 text-lg rounded-full border border-cta backdrop-blur-md bg-cta hover:bg-cta/80 hover:shadow-[0_10px_25px_rgba(0,118,234,0.45)] transition-all duration-300"
+          >
+            SUBMIT
+          </button>
+        </form>
+      )}
+    </>
   );
 }
