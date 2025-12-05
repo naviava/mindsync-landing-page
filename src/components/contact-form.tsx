@@ -298,6 +298,7 @@ export function ContactForm() {
 
           <button
             type="submit"
+            disabled={mutation.isPending}
             className="text-[22px] inline-flex items-center justify-center cursor-pointer text-white font-semibold px-10 py-4 text-lg rounded-full border border-cta backdrop-blur-md bg-cta hover:bg-cta/80 hover:shadow-[0_10px_25px_rgba(0,118,234,0.45)] transition-all duration-300"
           >
             SUBMIT
