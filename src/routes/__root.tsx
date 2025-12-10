@@ -7,6 +7,7 @@ import { Header } from "../components/header";
 import appCss from "../styles.css?url";
 import { Footer } from "@/components/footer";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { NotFound } from "@/components/not-found";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -29,6 +30,7 @@ export const Route = createRootRoute({
       },
     ],
   }),
+  notFoundComponent: NotFound,
 
   shellComponent: RootDocument,
 });
@@ -41,7 +43,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="flex flex-col min-h-screen">
         <QueryClientProvider client={queryClient}>
           <Header />
           {children}
