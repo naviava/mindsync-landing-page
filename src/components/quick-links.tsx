@@ -5,7 +5,7 @@ const LINKS: {
 }[] = [
   {
     id: "terms-footer",
-    label: "Terms and Conditions",
+    label: "Terms of Service",
     href: "/terms",
   },
   {
@@ -16,12 +16,12 @@ const LINKS: {
   {
     id: "blogs-footer",
     label: "Blogs",
-    href: "/blogs",
+    href: "#",
   },
   {
     id: "services-footer",
     label: "Services",
-    href: "/services",
+    href: "#",
   },
 ];
 
@@ -32,7 +32,7 @@ export function QuickLinks() {
       <ul className="space-y-2 mt-4">
         {LINKS.map((link) => (
           <li key={link.id} className="text-[18px]">
-            <a href="#">{link.label}</a>
+            <a href={link.href}>{link.label}</a>
           </li>
         ))}
       </ul>
