@@ -1,3 +1,5 @@
+import { motion, useReducedMotion } from "motion/react";
+
 import { SocialIcon } from "./social-icon";
 import { SOCIAL } from "@/data/social";
 import usePath from "@/hooks/use-path";
@@ -31,10 +33,16 @@ const LINKS: {
 
 export function Header() {
   const path = usePath();
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <header className="h-[121px] bg-[#00132b] text-white px-4 md:px-20 lg:px-10 xl:px-20">
-      <nav className="flex items-center justify-between max-w-[2350px] h-full mx-auto">
+      <motion.nav
+        initial={{ translateY: shouldReduceMotion ? 0 : -100, opacity: 0 }}
+        animate={{ translateY: 0, opacity: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="flex items-center justify-between max-w-[2350px] h-full mx-auto"
+      >
         <a href="/">
           <img
             src="/assets/logo-dark.png"
@@ -45,7 +53,10 @@ export function Header() {
         {(path.href === "/" || path.href.startsWith("/#")) && (
           <ul className="hidden lg:flex items-center justify-center font-semibold gap-x-10">
             {LINKS.map((link) => (
-              <li key={link.id} className="text-[18px] xl:text-[22px]">
+              <li
+                key={link.id}
+                className="text-[18px] xl:text-[22px] transition-colors duration-200 hover:text-cta"
+              >
                 <a href={link.href} className="font-poppins">
                   {link.label}
                 </a>
@@ -60,7 +71,7 @@ export function Header() {
             </li>
           ))}
         </ul>
-      </nav>
+      </motion.nav>
     </header>
   );
 }

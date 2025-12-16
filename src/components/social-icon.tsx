@@ -11,7 +11,7 @@ export function SocialIcon({ icon, href, className }: IProps) {
     <a href={href} target="_blank">
       <div
         className={cn(
-          "size-8 bg-cta p-1 rounded-full flex items-center justify-center",
+          "size-8 bg-cta p-1 rounded-full flex items-center justify-center transition-transform duration-200 hover:scale-110",
           className,
         )}
       >

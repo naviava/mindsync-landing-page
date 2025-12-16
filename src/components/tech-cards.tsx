@@ -1,11 +1,29 @@
+import { motion, useReducedMotion } from "motion/react";
+
 import { techCards } from "@/data/tech-expertise";
 import { cn } from "@/lib/utils";
 
 export function TechCards() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
-    <ul className="mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mx-auto w-fit gap-y-8 md:gap-x-12">
+    <motion.ul
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      variants={{
+        hidden: {},
+        visible: { transition: { staggerChildren: 0.12 } },
+      }}
+      className="mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mx-auto w-fit gap-y-8 md:gap-x-12"
+    >
       {techCards.map((item, idx) => (
-        <li
+        <motion.li
+          variants={{
+            hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 30 },
+            visible: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.45, ease: "easeOut" }}
           key={item.id}
           className={cn(
             "relative group w-[270px] h-60 rounded-lg perspective-[1000px] mx-auto",
@@ -29,8 +47,8 @@ export function TechCards() {
               </p>
             </div>
           </div>
-        </li>
+        </motion.li>
       ))}
-    </ul>
+    </motion.ul>
   );
 }
