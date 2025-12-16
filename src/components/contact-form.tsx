@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "@tanstack/react-form";
+import { motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 import { sendEmail } from "@/actions";
@@ -99,7 +100,13 @@ export function ContactForm() {
           We&apos;ll get back to you shortly.
         </p>
       ) : (
-        <form
+        <motion.form
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.12 } },
+          }}
           className="gap-y-6 mt-6 flex flex-col"
           onSubmit={(e) => {
             e.preventDefault();
@@ -112,7 +119,14 @@ export function ContactForm() {
               name="name"
               children={(field) => {
                 return (
-                  <div className="relative">
+                  <motion.div
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0 },
+                    }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    className="relative"
+                  >
                     <label
                       htmlFor={field.name}
                       className={cn(
@@ -148,7 +162,7 @@ export function ContactForm() {
                         {fieldErrors.name}
                       </div>
                     )}
-                  </div>
+                  </motion.div>
                 );
               }}
             />
@@ -162,7 +176,14 @@ export function ContactForm() {
                 name="phone"
                 children={(field) => {
                   return (
-                    <div className="relative">
+                    <motion.div
+                      variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        visible: { opacity: 1, y: 0 },
+                      }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                      className="relative"
+                    >
                       <label
                         htmlFor={field.name}
                         className={cn(
@@ -199,7 +220,7 @@ export function ContactForm() {
                           {fieldErrors.phone}
                         </div>
                       )}
-                    </div>
+                    </motion.div>
                   );
                 }}
               />
@@ -211,7 +232,14 @@ export function ContactForm() {
                 name="email"
                 children={(field) => {
                   return (
-                    <div className="relative">
+                    <motion.div
+                      variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        visible: { opacity: 1, y: 0 },
+                      }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                      className="relative"
+                    >
                       <label
                         htmlFor={field.name}
                         className={cn(
@@ -248,7 +276,7 @@ export function ContactForm() {
                           {fieldErrors.email}
                         </div>
                       )}
-                    </div>
+                    </motion.div>
                   );
                 }}
               />
@@ -261,7 +289,14 @@ export function ContactForm() {
               name="message"
               children={(field) => {
                 return (
-                  <div className="relative">
+                  <motion.div
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0 },
+                    }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    className="relative"
+                  >
                     <label
                       htmlFor={field.name}
                       className={cn(
@@ -290,20 +325,23 @@ export function ContactForm() {
                       disabled={mutation.isPending}
                       className="bg-white focus:outline-none rounded-3xl w-full text-[20px] px-6 py-4 xl:text-[22px]"
                     />
-                  </div>
+                  </motion.div>
                 );
               }}
             />
           </div>
 
-          <button
+          <motion.button
             type="submit"
             disabled={mutation.isPending}
-            className="text-[22px] inline-flex items-center justify-center cursor-pointer text-white font-semibold px-10 py-4 text-lg rounded-full border border-cta backdrop-blur-md bg-cta hover:bg-cta/80 hover:shadow-[0_10px_25px_rgba(0,118,234,0.45)] transition-all duration-300"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="text-[22px] inline-flex items-center justify-center cursor-pointer text-white font-semibold px-10 py-4 rounded-full border border-cta backdrop-blur-md bg-cta hover:bg-cta/80 hover:shadow-[0_10px_25px_rgba(0,118,234,)0.45] transition-all duration-300"
           >
             SUBMIT
-          </button>
-        </form>
+          </motion.button>
+        </motion.form>
       )}
     </>
   );

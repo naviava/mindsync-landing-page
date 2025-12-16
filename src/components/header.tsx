@@ -53,7 +53,10 @@ export function Header() {
         {(path.href === "/" || path.href.startsWith("/#")) && (
           <ul className="hidden lg:flex items-center justify-center font-semibold gap-x-10">
             {LINKS.map((link) => (
-              <li key={link.id} className="text-[18px] xl:text-[22px]">
+              <li
+                key={link.id}
+                className="text-[18px] xl:text-[22px] transition-colors duration-200 hover:text-cta"
+              >
                 <a href={link.href} className="font-poppins">
                   {link.label}
                 </a>

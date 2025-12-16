@@ -1,16 +1,28 @@
+import { motion, useReducedMotion } from "motion/react";
+
 import { digitalSolutions } from "@/data/tech-expertise";
 import { useScreenSize } from "@/hooks/use-screen-size";
 import { cn } from "@/lib/utils";
 
 export function DigitalSolutions() {
   const { isMobile } = useScreenSize();
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <div className="flex flex-col gap-y-6 mt-12 lg:mt-16 md:gap-y-8 lg:gap-y-10 xl:gap-y-14">
       <h3 className="text-cta text-[40px] font-poppins font-bold text-center">
         Digital Solutions
       </h3>
-      <ul className="grid grid-cols-2 md:grid-cols-3">
+      <motion.ul
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={{
+          hidden: {},
+          visible: { transition: { staggerChildren: 0.15 } },
+        }}
+        className="grid grid-cols-2 md:grid-cols-3"
+      >
         {digitalSolutions.map((item, idx) => (
           <li
             key={item.id}
@@ -65,8 +77,14 @@ export function DigitalSolutions() {
             )}
 
             {/* Content */}
-            <div
+            <motion.div
               key={item.id}
+              variants={{
+                hidden: { opacity: 0, scale: shouldReduceMotion ? 1 : 0.95 },
+                visible: { opacity: 1, scale: 1 },
+              }}
+              whileHover={{ scale: 1.04 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
               className="flex flex-col mx-auto p-4 md:p-8 xl:p-12"
             >
               <img
@@ -77,10 +95,10 @@ export function DigitalSolutions() {
               <h4 className="text-center text-balance text-[25px] font-bold text-cta">
                 {item.label}
               </h4>
-            </div>
+            </motion.div>
           </li>
         ))}
-      </ul>
+      </motion.ul>
     </div>
   );
 }
