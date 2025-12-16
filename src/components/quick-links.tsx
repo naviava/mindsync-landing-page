@@ -31,7 +31,10 @@ export function QuickLinks() {
       <h4 className="font-poppins font-semibold text-[20px]">QUICK LINKS</h4>
       <ul className="space-y-2 mt-4">
         {LINKS.map((link) => (
-          <li className="text-[18px] transition-colors duration-200 hover:text-cta">
+          <li
+            key={link.id}
+            className="text-[18px] transition-colors duration-200 hover:text-cta"
+          >
             <a href={link.href}>{link.label}</a>
           </li>
         ))}
